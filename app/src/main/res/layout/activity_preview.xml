@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.cest.smartclass_student.PreviewActivity">
+
+   <ImageView
+       android:id="@+id/preview_img"
+       android:scaleType="fitCenter"
+       android:layout_width="match_parent"
+       android:layout_height="0dp"
+       android:layout_weight="1"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/preview_cancel"
+            android:background="@drawable/selector_white"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textColor="#2196F3"
+            android:layout_height="48dp"
+            android:text="취소" />
+        <Button
+            android:id="@+id/preview_okay"
+            android:background="@drawable/selector_blue"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textColor="#FFFFFF"
+            android:layout_height="48dp"
+            android:text="확인" />
+    </LinearLayout>
+
+</LinearLayout>
