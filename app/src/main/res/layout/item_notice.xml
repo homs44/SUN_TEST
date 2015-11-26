@@ -19,28 +19,31 @@
             android:paddingRight="16dp">
 
             <TextView
-                android:id="@+id/item_class_name"
+                android:id="@+id/item_notice_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_marginBottom="2dp"
-                android:text="물리전자"
+                android:text="네트워크 Chapter1"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/item_class_code"
+                android:id="@+id/item_notice_created"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/item_class_name"
-                android:text="ELEC241001" />
+                android:layout_below="@+id/item_notice_title"
+                android:layout_marginRight="8dp"
+                android:layout_toLeftOf="@+id/item_notice_professor"
+                android:text="2015 . 08 . 31" />
 
             <TextView
-                android:id="@+id/item_class_professor"
+                android:id="@+id/item_notice_professor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/item_notice_title"
                 android:layout_alignParentRight="true"
-                android:text="조유제" />
+                android:text="조유제"/>
 
 
         </RelativeLayout>

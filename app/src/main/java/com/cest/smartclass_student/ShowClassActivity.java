@@ -136,8 +136,8 @@ public class ShowClassActivity extends Activity{
             @Override
             public void success(JsonElement jsonElement, Response response) {
                 JsonArray temp = jsonElement.getAsJsonArray();
-                for(int i =0; i<array.size();i++){
-                    array.remove(i);
+                for(int i =0,size = array.size(); i<size;i++){
+                    array.remove(0);
                 }
                 array.addAll(temp);
                 sca.notifyDataSetChanged();
@@ -163,7 +163,9 @@ public class ShowClassActivity extends Activity{
             i.putExtra("class",obj.toString());
             startActivity(i);
         }else if(menu==C.MENU_NOTICE){
-
+            Intent i = new Intent(ShowClassActivity.this,NoticeActivity.class);
+            i.putExtra("class",obj.toString());
+            startActivity(i);
         }else{
             Toast.makeText(getApplicationContext(), "오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
             finish();

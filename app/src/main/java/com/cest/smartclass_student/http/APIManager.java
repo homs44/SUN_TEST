@@ -10,7 +10,7 @@ public class APIManager {
     private  static APIManager instance;
     private RestAdapter restAdapter;
     private APIService api;
-    private static final String SERVER_URL = "http://192.168.1.28/index.php";
+    private static final String SERVER_URL = "http://192.168.123.166/index.php";
 
     public synchronized static APIManager getInstance(){
         if(instance ==null) {

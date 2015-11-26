@@ -2,15 +2,14 @@ package com.cest.smartclass_student;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
-import com.cest.smartclass_student.Adapter.CheckAttendanceAdapter;
+import com.cest.smartclass_student.Adapter.NoticeAdapter;
 import com.cest.smartclass_student.dialog.MProgressDialog;
 import com.cest.smartclass_student.http.APIManager;
 import com.cest.smartclass_student.support.Util;
@@ -26,45 +25,61 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class CheckAttendanceActivity extends Activity {
+public class NoticeActivity extends Activity {
 
-    @Bind(R.id.check_attendance_name)
-    TextView tv_name;
-    @Bind(R.id.check_attendance_rv)
-    RecyclerView rv_attendance;
 
-    CheckAttendanceAdapter caa;
+
+
+
+    @Bind(R.id.notice_class)
+    TextView tv_class;
+    @Bind(R.id.notice_rv)
+    RecyclerView rv_notices;
+
     JsonArray array;
-
+    NoticeAdapter na;
     LinearLayoutManager mLayoutManager;
+
     JsonObject obj;
     int c_classid;
-    int c_userid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_check_attendance);
+        setContentView(R.layout.activity_notice);
         ButterKnife.bind(this);
 
         Intent i = getIntent();
         obj = new JsonParser().parse(i.getStringExtra("class")).getAsJsonObject();
         c_classid = obj.get("c_classid").getAsInt();
-        SharedPreferences mPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        c_userid = mPref.getInt(C.PREF_KEY_C_USERID, -1);
-        tv_name.setText(obj.get("name").getAsString());
-        Util.log("c_classid = " +c_classid + " c_userid = " +c_userid);
+        tv_class.setText(obj.get("name").getAsString());
 
         array = new JsonArray();
-        caa = new CheckAttendanceAdapter(getApplicationContext(),array);
+        na = new NoticeAdapter(getApplicationContext(), array);
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        rv_attendance.setAdapter(caa);
-        rv_attendance.setLayoutManager(mLayoutManager);
-        rv_attendance.setItemAnimator(new DefaultItemAnimator());
+        rv_notices.setAdapter(na);
+        rv_notices.setLayoutManager(mLayoutManager);
+        rv_notices.setItemAnimator(new DefaultItemAnimator());
 
-        getAttendances(c_classid, c_userid);
+        na.setCustomOnItemClickListener(new CustomOnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+                Intent i = new Intent(NoticeActivity.this, NoticeDetailActivity.class);
+                i.putExtra("notice", na.getItem(position).toString());
+                i.putExtra("class", obj.toString());
+                startActivity(i);
+            }
+        });
+        getNotices();
+
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
     }
 
     @Override
@@ -73,19 +88,22 @@ public class CheckAttendanceActivity extends Activity {
         ButterKnife.unbind(this);
     }
 
-    private void getAttendances(int c_classid,int c_userid){
-        final MProgressDialog mpd = new MProgressDialog(CheckAttendanceActivity.this);
+    public void getNotices(){
+        final MProgressDialog mpd = new MProgressDialog(NoticeActivity.this);
         mpd.show();
-        APIManager.getInstance().getAPI().getMyAttendance(c_userid, c_classid, new Callback<JsonElement>() {
+        APIManager.getInstance().getAPI().getNoticesByClassid(c_classid, new Callback<JsonElement>() {
             @Override
             public void success(JsonElement jsonElement, Response response) {
-                Util.log(jsonElement.toString());
+              //  Util.log(jsonElement.toString());
                 JsonArray temp = jsonElement.getAsJsonArray();
-                for(int i =0,size = array.size(); i<size;i++){
+                Util.log("before size = "+array.size());
+                for (int i = 0,size = array.size(); i < size; i++) {
+                    Util.log("index = "+i);
                     array.remove(0);
                 }
+                Util.log("after size = "+array.size());
                 array.addAll(temp);
-                caa.notifyDataSetChanged();
+                na.notifyDataSetChanged();
                 mpd.dismiss();
             }
 
@@ -96,6 +114,4 @@ public class CheckAttendanceActivity extends Activity {
             }
         });
     }
-
-
 }
