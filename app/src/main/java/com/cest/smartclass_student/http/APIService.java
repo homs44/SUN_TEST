@@ -20,7 +20,7 @@ public interface APIService {
     @FormUrlEncoded
     @POST("/auth/login")
     void login(@Field("userid") String user_id, @Field("password") String password, @Field("gcmid") String gcmid,@Field("type") int type, Callback<JsonElement> callback);
-
+    //asdjfklasdjfklsaf
 
     @GET("/API/class_/select_all_sugang_class")
     void getMyClasses(@Query("c_userid") int c_userid, Callback<JsonElement> callback);
